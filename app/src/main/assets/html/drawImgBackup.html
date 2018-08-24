@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=320 user-scalable=no" />
+<meta http-equiv="Content-Type" content="width=device-width,init-scale=1.0, maximum-scale=1.0, user-scalable=0;"/>
+<title>Draw Sign</title>
+<link rel="stylesheet" href="./css/jquery.mobile-1.4.5.css" />
+<script src="./js/jquery-1.11.1.min.js"></script>
+<script src="./js/jquery.mobile-1.4.5.js"></script>
+<script src="./js/hammer.min.js"></script>
+<script type="text/javascript">
+var startX=-1, startY=-1, endX=-1, endY=-1;
+
+function init() {
+    var $canvas = $("#canvas");
+    $canvas.attr({width:screen.width, height:screen.height * 0.85});
+    $canvas.on("hold tap swipe doubletap dragstart drag dragend release", onTouch);
+}
+
+function showMsg(msg) {
+    $("#message").text(msg);
+}
+
+function onTouch(e) {
+    console.log(e);
+    //var message = "Type: " + e.type + " /" + e.direction + ", X: " + e.offsetX + ", Y:" + e.offsetY;
+    var message = "Type: " + e.type + " /" + e.direction;
+    showMsg(message);
+
+    if(e.type == "dragstart") {
+        startX = touch.x;
+        startY = touch.y;
+    } else if(e.type == "drag") {
+        endX = touch.x;
+        endY = touch.y;
+        drawCanvas();
+        startX = endX;
+        startY = endY;
+    }
+}
+
+function drawCanvas() {
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    ctx.strokeStyle = "#000033";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX. endY);
+    ctx.stroke();
+}
+
+$(function(){
+    init();
+});
+</script>
+</head>
+<body id="stage" class="theme">
+<canvas id="canvas" style="border:1px solid #c3c3c3;"></canvas>
+<label id="message">Draw image.</label>
+</body>
+</html>
